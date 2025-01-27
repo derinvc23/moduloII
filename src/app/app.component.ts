@@ -13,9 +13,9 @@ import { ProductCardComponent } from './product-card/product-card.component';
 export class AppComponent {
   title = 'Diplomado Univalle';
   products = [
-    { id: 1, name: 'Producto 1', price: 100, image: 'https://via.placeholder.com/150' },
-    { id: 2, name: 'Producto 2', price: 200, image: 'https://via.placeholder.com/150' },
-    { id: 3, name: 'Producto 3', price: 300, image: 'https://via.placeholder.com/150' }
+    { id: 1, name: 'Producto 1', price: 100, image: 'https://fairplaybo.vtexassets.com/arquivos/ids/508525-150-auto?v=638727349285600000&width=150&height=auto&aspect=true' },
+    { id: 2, name: 'Producto 2', price: 200, image: 'https://fairplaybo.vtexassets.com/arquivos/ids/508525-150-auto?v=638727349285600000&width=150&height=auto&aspect=true' },
+    { id: 3, name: 'Producto 3', price: 300, image: 'https://fairplaybo.vtexassets.com/arquivos/ids/508525-150-auto?v=638727349285600000&width=150&height=auto&aspect=true' }
   ];
 
   cart: { id: number; name: string; price: number; image: string }[] = [];
