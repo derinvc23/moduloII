@@ -204,10 +204,17 @@
         </defs>
       </svg>
       <h1>{{ title }}</h1>
+
+      <!-- Formulario de búsqueda -->
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+        <input formControlName="searchTerm" placeholder="Buscar productos..." />
+        <button type="submit" [disabled]="searchForm.invalid">Buscar</button>
+        <button type="button" (click)="onClearSearch()">Limpiar</button>
+      </form>
       <!-- Lista de Productos -->
       <h2>Catálogo de Productos</h2>
       <div class="product-list">
-        <app-product-card *ngFor="let product of products" [product]="product" (addToCartEvent)="onAddToCart($event)">
+        <app-product-card *ngFor="let product of filteredProducts" [product]="product" (addToCartEvent)="onAddToCart($event)">
         </app-product-card>
       </div>
 

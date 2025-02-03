@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router';  // Importa RouterModule
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from './product-card/product-card.component';
-import { ProductService } from './services/product.service'; // Importa el servicio
+import { ProductService } from './services/product.service'; 
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';  // Importar ReactiveFormsModule
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent, RouterModule, ReactiveFormsModule, RouterOutlet],  // Incluye ReactiveFormsModule y RouterModule en imports
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -19,38 +20,52 @@ export class AppComponent implements OnInit {
     { id: 3, name: 'Producto 3', price: 300, image: 'https://www.tresreyes.com.mx/products/tenis-casual-blanco-joven-court-02170' }
   ];
 
+  filteredProducts = [...this.products]; 
   cartCount: number = 0;
+  searchForm: FormGroup; 
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private fb: FormBuilder) {
+    this.searchForm = this.fb.group({
+      searchTerm: ['', Validators.required] 
+    });
+  }
 
   ngOnInit() {
     this.updateCartCount();
   }
 
-  // Agrega producto al carrito usando el servicio
   onAddToCart(productId: number) {
     const product = this.products.find(p => p.id === productId);
     if (product) {
       this.productService.addToCart(product);
       this.updateCartCount();
-      console.log('Producto agregado al carrito:', product);
     }
   }
 
-  // Actualiza la cantidad de productos en el carrito
   updateCartCount() {
     this.cartCount = this.productService.getCartCount();
   }
 
-  // Elimina producto del carrito usando el servicio
   onRemoveFromCart(productId: number) {
     this.productService.removeFromCart(productId);
     this.updateCartCount();
   }
 
-  // Obtiene los productos en el carrito
+  onSearch() {
+    console.log('Buscando:', this.searchForm.get('searchTerm')?.value); 
+    const searchTerm = this.searchForm.get('searchTerm')?.value.toLowerCase();
+    this.filteredProducts = this.products.filter(product =>
+      product.name.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  onClearSearch() {
+    this.searchForm.reset();
+    this.filteredProducts = [...this.products];
+  }
+  
+
   get cart() {
     return this.productService.getCart();
   }
 }
-
