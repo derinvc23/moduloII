@@ -1,37 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { ProductService } from './services/product.service'; // Importa el servicio
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule, ProductCardComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Diplomado Univalle';
   products = [
-    { id: 1, name: 'Producto 1', price: 100, image: 'https://fairplaybo.vtexassets.com/arquivos/ids/508525-150-auto?v=638727349285600000&width=150&height=auto&aspect=true' },
-    { id: 2, name: 'Producto 2', price: 200, image: 'https://fairplaybo.vtexassets.com/arquivos/ids/508525-150-auto?v=638727349285600000&width=150&height=auto&aspect=true' },
-    { id: 3, name: 'Producto 3', price: 300, image: 'https://fairplaybo.vtexassets.com/arquivos/ids/508525-150-auto?v=638727349285600000&width=150&height=auto&aspect=true' }
+    { id: 1, name: 'Producto 1', price: 100, image: 'https://www.fairplay.com.bo/puma-zap-softride-premier-376186-09/phttps://www.tiendaamiga.com.bo/media/catalog/product/cache/55e84a69b2b6f5251b92ffff7fcb1046/t/e/televisor_skyworth_75_qled_google_tv_-75sue9500.png' },
+    { id: 2, name: 'Producto 2', price: 200, image: 'https://www.tresreyes.com.mx/products/tenis-casual-blanco-joven-court-02170' },
+    { id: 3, name: 'Producto 3', price: 300, image: 'https://www.tresreyes.com.mx/products/tenis-casual-blanco-joven-court-02170' }
   ];
 
-  cart: { id: number; name: string; price: number; image: string }[] = [];
+  cartCount: number = 0;
 
-  // Función que maneja el evento de agregar al carrito
+  constructor(private productService: ProductService) { }
+
+  ngOnInit() {
+    this.updateCartCount();
+  }
+
+  // Agrega producto al carrito usando el servicio
   onAddToCart(productId: number) {
     const product = this.products.find(p => p.id === productId);
     if (product) {
-      this.cart.push(product);  // Agregar producto al carrito
+      this.productService.addToCart(product);
+      this.updateCartCount();
       console.log('Producto agregado al carrito:', product);
     }
   }
 
-  // Función para eliminar producto del carrito
+  // Actualiza la cantidad de productos en el carrito
+  updateCartCount() {
+    this.cartCount = this.productService.getCartCount();
+  }
+
+  // Elimina producto del carrito usando el servicio
   onRemoveFromCart(productId: number) {
-    this.cart = this.cart.filter(p => p.id !== productId);
-    console.log('Producto eliminado del carrito:', productId);
+    this.productService.removeFromCart(productId);
+    this.updateCartCount();
+  }
+
+  // Obtiene los productos en el carrito
+  get cart() {
+    return this.productService.getCart();
   }
 }
+

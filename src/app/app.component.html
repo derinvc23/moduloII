@@ -203,22 +203,24 @@
           </clipPath>
         </defs>
       </svg>
-      <h1>Hola, {{ title }}</h1>
-      <p>¡Felicitaciones! Tu aplicación está funcionando. 🎉</p>
-    </div>
-    <div class="product-list">
-      <app-product-card *ngFor="let product of products" [product]="product" (addToCartEvent)="onAddToCart($event)">
-      </app-product-card>
-    </div>
-
-    <h2>Carrito de Compras</h2>
-    <div class="cart-list">
-      <div *ngFor="let product of cart">
-        <p>{{ product.name }} - {{ product.price | currency }}</p>
-        <button (click)="onRemoveFromCart(product.id)">Eliminar</button>
+      <h1>{{ title }}</h1>
+      <!-- Lista de Productos -->
+      <h2>Catálogo de Productos</h2>
+      <div class="product-list">
+        <app-product-card *ngFor="let product of products" [product]="product" (addToCartEvent)="onAddToCart($event)">
+        </app-product-card>
       </div>
-      <div *ngIf="cart.length === 0">
-        <p>No hay productos en el carrito</p>
+
+      <!-- Carrito de Compras -->
+      <h2>Carrito de Compras ({{ cart.length }} productos)</h2>
+      <div class="cart-list">
+        <div *ngFor="let product of cart" class="cart-item">
+          <p>{{ product.name }} - {{ product.price | currency }}</p>
+          <button (click)="onRemoveFromCart(product.id)">Eliminar</button>
+        </div>
+        <div *ngIf="cart.length === 0">
+          <p>No hay productos en el carrito</p>
+        </div>
       </div>
     </div>
 
