@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
     this.filteredProducts = [...this.products];
   }
   
+  
 
   get cart() {
     return this.productService.getCart();
